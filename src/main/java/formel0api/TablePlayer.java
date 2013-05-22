@@ -30,23 +30,22 @@ import javax.persistence.*;
 @Table( name = "Player")
 public class TablePlayer implements Serializable {
     
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    
     private String username;
     private String password;
     private long avatarID;
     
+    @Id
+    @Column ( name = "username", nullable = false)
     public String getUsername() {
         return username;
     }
 
-    public void setId(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
     
-    public String getPssword(){
+    @Column ( name = "password", nullable = false)
+    public String getPassword(){
         return password;
     }
 
@@ -54,7 +53,8 @@ public class TablePlayer implements Serializable {
         this.password = password;
     }
     
-    public Long gletAvatarID() {
+    @Column ( name = "avatarID", nullable = false)
+    public Long getAvatarID() {
         return avatarID;
     }
 
