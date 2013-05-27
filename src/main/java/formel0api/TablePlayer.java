@@ -65,7 +65,7 @@ public class TablePlayer implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (username != null ? username.hashCode() : 0);
         return hash;
     }
 
@@ -76,7 +76,7 @@ public class TablePlayer implements Serializable {
             return false;
         }
         TablePlayer other = (TablePlayer) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.username == null && other.username != null) || (this.username != null && !this.username.equals(other.username))) {
             return false;
         }
         return true;
@@ -84,7 +84,7 @@ public class TablePlayer implements Serializable {
 
     @Override
     public String toString() {
-        return "formel0api.TablePlayer[ id=" + id + " ]";
+        return "formel0api.TablePlayer[ Username=" + username + ",  Password=" + password + "  Avatar_ID=" + avatarID + "  ]";
     }
     
 }
