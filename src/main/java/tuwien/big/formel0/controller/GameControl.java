@@ -5,6 +5,7 @@ import javax.faces.bean.SessionScoped;
 import formel0api.Game;
 import formel0api.Player;
 import java.util.concurrent.TimeUnit;
+import tuwien.big.formel0.webservice.WebService;
 
 @ManagedBean(name = "gc")
 @SessionScoped
@@ -92,6 +93,13 @@ public class GameControl {
             this.computerscore = 0;
         }
         ++round;
+
+        if(isGameOver()) {
+            WebService.setWinner(player.getPosition() > computer.getPosition() ? player.getName() : "Computer");
+            WebService.setDuration(game.getSpentTime() / 1000);
+            WebService.setUsername(player.getName());
+            WebService.sendHighScore();
+        }
     }
     
     /**
