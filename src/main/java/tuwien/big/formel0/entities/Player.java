@@ -2,9 +2,12 @@ package tuwien.big.formel0.entities;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.NoneScoped;
+import javax.persistence.*;
 
 @ManagedBean(name = "player")
 @NoneScoped
+@Entity
+@Table
 public class Player {
 
     private String firstname = null;
@@ -23,6 +26,8 @@ public class Player {
     /**
      * @return the name
      */
+    @Id
+    @Column (nullable = false)
     public String getName() {
         return name;
     }
@@ -37,6 +42,7 @@ public class Player {
     /**
      * @return the password
      */
+    @Column (nullable = false)
     public String getPassword() {
         return password;
     }
@@ -51,6 +57,7 @@ public class Player {
     /**
      * @return the firstname
      */
+    @Column (nullable = false)
     public String getFirstname() {
         return firstname;
     }
@@ -65,6 +72,7 @@ public class Player {
     /**
      * @return the lastname
      */
+    @Column (nullable = false)
     public String getLastname() {
         return lastname;
     }
@@ -79,6 +87,7 @@ public class Player {
     /**
      * @return the birthday
      */
+    @Column (nullable = false)
     public String getBirthday() {
         return birthday;
     }
@@ -93,6 +102,7 @@ public class Player {
     /**
      * @return the sex
      */
+    @Column (nullable = false)
     public String getSex() {
         return sex;
     }

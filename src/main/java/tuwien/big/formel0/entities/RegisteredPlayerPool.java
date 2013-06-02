@@ -6,6 +6,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 /**
  *
@@ -31,17 +35,61 @@ public class RegisteredPlayerPool {
     }
 
     public boolean addPlayer(Player p) {
-        return regplayers.putIfAbsent(p.getName(), p) == null;
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("lab4");
+        
+        EntityManager em = emf.createEntityManager();
+
+        EntityTransaction tx = em.getTransaction();
+
+        tx.begin();
+
+        Player tp = new Player();
+        tp.setPassword(p.getPassword());
+        tp.setName(p.getName());
+        tp.setFirstname(p.getFirstname());
+        tp.setLastname(p.getLastname());
+        tp.setBirthday(p.getBirthday());
+        tp.setSex(p.getSex());
+
+        em.persist(tp);
+
+        tx.commit();
+
+        em.close();
+
+        emf.close();
+
+        return true;
+        //return regplayers.putIfAbsent(p.getName(), p) == null;
     }
 
     public Player getRegisteredPlayer(String username, String password) {
-        Player curplayer;
+       Player curplayer = null;
+        
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("lab4");
+        EntityManager em = emf.createEntityManager();
 
-        if ((curplayer = regplayers.get(username)) != null) {
-            if (curplayer.getPassword().equals(password)) {
-                return curplayer;
-            }
+        EntityTransaction tx = em.getTransaction();
+
+        tx.begin();
+
+        Player tp = em.find(Player.class, username);
+        
+        if (tp.getPassword().equals(password)) {
+                  
+            curplayer = tp;
         }
+        
+        
+
+        tx.commit();
+
+        em.close();
+
+        emf.close();
+
 
         return null;
     }

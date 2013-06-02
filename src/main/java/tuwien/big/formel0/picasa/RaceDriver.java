@@ -1,10 +1,13 @@
 package tuwien.big.formel0.picasa;
 
+import javax.persistence.*;
 /**
  * Represents a race driver from Picasa
  * @author pl
  *
  */
+@Entity
+@Table
 public class RaceDriver {
 
     private String name;
@@ -14,6 +17,8 @@ public class RaceDriver {
     public RaceDriver() {
     }
 
+    @Id
+    @Column (nullable = false)
     public String getName() {
         return name;
     }
@@ -22,6 +27,7 @@ public class RaceDriver {
         this.name = name;
     }
 
+    @Column (nullable = false)
     public String getUrl() {
         return url;
     }
@@ -30,6 +36,7 @@ public class RaceDriver {
         this.url = url;
     }
 
+    @Column (nullable = false)
     public String getWikiUrl() {
         return wikiUrl;
     }
