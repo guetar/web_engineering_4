@@ -2,6 +2,7 @@ package tuwien.big.formel0.picasa;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import tuwien.big.formel0.entities.Player;
 /**
  * Represents a race driver from Picasa
  * @author pl
@@ -18,6 +19,10 @@ public class RaceDriver implements Serializable {
     private String url;
     private String wikiUrl;
 
+    @JoinColumn
+    @ManyToOne
+    private Player player;
+    
     public RaceDriver() {
     }
 
@@ -51,6 +56,14 @@ public class RaceDriver implements Serializable {
     
     public void setId(Integer id) {
         this.id = id;
+    }
+    
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    
+    public Player getPlayer() {
+        return player;
     }
 
 }

@@ -34,7 +34,7 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean(name = "drivers")
 public class RaceDriverControl implements IRaceDriverService {
     
-    List<RaceDriver> list;
+    private List<RaceDriver> list;
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
     public RaceDriverControl() {
@@ -71,6 +71,10 @@ public class RaceDriverControl implements IRaceDriverService {
 //            }
 //        }
 //        
+        return list;
+    }
+    
+    public List<RaceDriver> getRaceDriver() {
         return list;
     }
 }
