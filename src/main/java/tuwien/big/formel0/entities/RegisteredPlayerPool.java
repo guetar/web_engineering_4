@@ -38,7 +38,12 @@ public class RegisteredPlayerPool {
         Player tp = new Player();
         tp.setName("t");
         tp.setPassword("t");
+        tp.setFirstname("t");
+        tp.setLastname("t");
+        tp.setBirthday("12.12.1212");
+        tp.setSex("f");
         regplayers.put("t", tp);
+        this.createPlayer(tp.getFirstname(),tp.getLastname(),tp.getName(),tp.getPassword(),tp.getBirthday(),tp.getSex());
     }
 
     public boolean addPlayer(Player p) {
