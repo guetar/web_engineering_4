@@ -1,13 +1,11 @@
 package tuwien.big.formel0.controller;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import formel0api.Game;
 import formel0api.Player;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import tuwien.big.formel0.twitter.TwitterClient;
 import tuwien.big.formel0.twitter.TwitterStatusMessage;
 import tuwien.big.formel0.webservice.WebService;
@@ -107,7 +105,11 @@ public class GameControl {
             
             TwitterClient twitter = new TwitterClient();
             TwitterStatusMessage message = new TwitterStatusMessage(player.getName(), WebService.getUuid(), new Date());
-            twitter.publishUuid(message);
+            try {
+                twitter.publishUuid(message);
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
     

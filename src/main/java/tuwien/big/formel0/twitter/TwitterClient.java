@@ -18,15 +18,12 @@ public class TwitterClient implements ITwitterClient {
     
     private Twitter twitter;
  
-    public void publishUuid(TwitterStatusMessage message) {
+    public void publishUuid(TwitterStatusMessage message) throws Exception {
  
         twitter = new TwitterFactory().getInstance();
         twitter.setOAuthConsumer(CONSUMER_KEY, CONSUMER_KEY_SECRET);
         twitter.setOAuthAccessToken(new AccessToken(CONSUMER_TOKEN, CONSUMER_TOKEN_SECRET));
-        try {
-            twitter.updateStatus(message.getTwitterPublicationString());
-        } catch (TwitterException ex) {
-            System.out.println(ex.getMessage());
-        }
+        
+        twitter.updateStatus(message.getTwitterPublicationString());
     }
 }
