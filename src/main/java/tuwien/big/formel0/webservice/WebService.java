@@ -9,6 +9,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -39,7 +41,7 @@ public class WebService {
     }
 
     public static void setGender(String gender) {
-        WebService.gender = gender.equals("m") ? "MALE" : "FEMALE";
+        WebService.gender = gender == null || gender.equals("f") ? "FEMALE" : "MALE";
     }
 
     public static void setDuration(long duration) {
@@ -107,7 +109,7 @@ public class WebService {
 
         try {
             uuid = new PublishHighScoreService().getPublishHighScorePort().publishHighScore(request);
-            System.out.println(uuid);
+            Logger.getLogger(WebService.class.getName()).log(Level.INFO, uuid);
         } catch (tuwien.big.formel0.webservice.Failure ex) {
             System.out.println(ex.getFaultInfo().getDetail());
         }
