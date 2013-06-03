@@ -40,11 +40,11 @@
                                 <f:selectItem itemValue="w" itemLabel="#{msg.female}"/>
                                 <f:selectItem itemValue="m" itemLabel="#{msg.male}"/>
                             </h:selectOneMenu>
-                            <!--
+                            
                             <h:outputLabel class="registerform" for="avatar" value="#{msg.avatar}"/>
-                            <h:selectOneMenu id="avatar" label="#{msg.avatar}" value="Fahrer" tabindex="6">
-                                <f:selectItem itemValue="#{drivers.raceDriver}" itemLabel="test"/>
-                            </h:selectOneMenu>-->
+                            <h:selectOneMenu id="avatar" label="#{msg.avatar}" tabindex="6">
+                                <f:selectItems value="#{drivers.raceDrivers}" var="raceDriver" itemValue="#{raceDriver.name}"/>
+                            </h:selectOneMenu>
                         </fieldset>
 
                         <h3>#{msg.logindatahead}</h3>
