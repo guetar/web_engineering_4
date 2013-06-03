@@ -107,11 +107,7 @@ public class GameControl {
             
             TwitterClient twitter = new TwitterClient();
             TwitterStatusMessage message = new TwitterStatusMessage(player.getName(), WebService.getUuid(), new Date());
-            try {
-                twitter.publishUuid(message);
-            } catch (Exception ex) {
-                Logger.getLogger(GameControl.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            twitter.publishUuid(message);
         }
     }
     
