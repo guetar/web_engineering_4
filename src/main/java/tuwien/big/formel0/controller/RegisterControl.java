@@ -39,7 +39,9 @@ public class RegisterControl {
 
     public String register() {
         boolean success = getRpp().addPlayer(newplayer);
-
+        Player savedPlayer = getRpp().createPlayer(newplayer.getFirstname(), newplayer.getLastname(), newplayer.getName(), newplayer.getPassword(), newplayer.getBirthday(), newplayer.getSex());
+        //savedPlayer = getRpp().findPlayerByUsername("vader");
+        //System.out.println(savedPlayer.getBirthday());
         if (success == true) {
             registrationsuccessful = true;
         }

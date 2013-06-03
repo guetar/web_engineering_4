@@ -1,6 +1,7 @@
 package tuwien.big.formel0.entities;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -8,8 +9,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import tuwien.big.formel0.picasa.RaceDriver;
 
 /**
  *
@@ -18,6 +21,9 @@ import javax.persistence.Persistence;
 @ManagedBean(name = "rpp")
 @ApplicationScoped
 public class RegisteredPlayerPool {
+    
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("lab4");
+    private EntityManager em;
 
     ConcurrentMap<String, Player> regplayers = null;
 
@@ -25,6 +31,7 @@ public class RegisteredPlayerPool {
      * Creates a new instance of RegisteredPlayerPool
      */
     public RegisteredPlayerPool() {
+        
         regplayers = new ConcurrentHashMap<String, Player>();
 
         //Add test player
@@ -35,61 +42,17 @@ public class RegisteredPlayerPool {
     }
 
     public boolean addPlayer(Player p) {
-        
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("lab4");
-        
-        EntityManager em = emf.createEntityManager();
-
-        EntityTransaction tx = em.getTransaction();
-
-        tx.begin();
-
-        Player tp = new Player();
-        tp.setPassword(p.getPassword());
-        tp.setName(p.getName());
-        tp.setFirstname(p.getFirstname());
-        tp.setLastname(p.getLastname());
-        tp.setBirthday(p.getBirthday());
-        tp.setSex(p.getSex());
-
-        em.persist(tp);
-
-        tx.commit();
-
-        em.close();
-
-        emf.close();
-
-        return true;
-        //return regplayers.putIfAbsent(p.getName(), p) == null;
+        return regplayers.putIfAbsent(p.getName(), p) == null;
     }
 
     public Player getRegisteredPlayer(String username, String password) {
-       Player curplayer = null;
-        
-        
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("lab4");
-        EntityManager em = emf.createEntityManager();
+        Player curplayer;
 
-        EntityTransaction tx = em.getTransaction();
-
-        tx.begin();
-
-        Player tp = em.find(Player.class, username);
-        
-        if (tp.getPassword().equals(password)) {
-                  
-            curplayer = tp;
+        if ((curplayer = regplayers.get(username)) != null) {
+            if (curplayer.getPassword().equals(password)) {
+                return curplayer;
+            }
         }
-        
-        
-
-        tx.commit();
-
-        em.close();
-
-        emf.close();
-
 
         return null;
     }
@@ -99,5 +62,90 @@ public class RegisteredPlayerPool {
      */
     public List<Player> getRegplayers() {
         return new ArrayList<Player>(regplayers.values());
+    }
+    
+    public RaceDriver createRaceDriver(String name, String url, String wikiurl) {
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+        RaceDriver raceDriver = new RaceDriver();
+        raceDriver.setName(name);
+        raceDriver.setUrl(url);
+        raceDriver.setWikiUrl(wikiurl);
+        em.persist(raceDriver);
+        em.getTransaction().commit();
+        em.close();
+        return raceDriver;
+    }
+    
+    public RaceDriver findRaceDriverByID(int id) {
+        em = emf.createEntityManager();
+        return em.find(RaceDriver.class, id);
+    }
+    
+    public Player createPlayer(String firstname, String lastname, String name, String password, String birthday, String sex) {
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+        Player player = new Player();
+        player.setFirstname(firstname);
+        player.setLastname(lastname);
+        player.setName(name);
+        player.setPassword(password);
+        player.setBirthday(birthday);
+        player.setSex(sex);
+        em.persist(player);
+        em.getTransaction().commit();
+        em.close();
+        return player;
+    }
+
+    
+    public void removePlayer(int id) {
+        em = emf.createEntityManager();
+        Player player = findPlayerByID(id);
+        if(player != null) {
+            em.remove(player);
+        }
+    }
+    
+    public void removePlayer(String username) {
+        em = emf.createEntityManager();
+        Player player = findPlayerByUsername(username);
+        if(player != null) {
+            em.remove(player);
+        }
+    }
+
+    
+    public Player findPlayerByID(int id) {
+        em = emf.createEntityManager();
+        return em.find(Player.class, id);
+    }
+
+    
+    public Player findPlayerByUsername(String username) {
+        em = emf.createEntityManager();
+        TypedQuery query = em.createQuery("SELECT p FROM Player p WHERE p.name LIKE :playerName", Player.class);
+        query.setParameter("playerName", username);
+        query.setMaxResults(10);
+        return ((Player)query.getResultList().get(0))==null ? null : (Player)query.getResultList().get(0) ;
+    }
+
+    
+    public Collection<Player> findAllPlayers() {
+        em = emf.createEntityManager();
+        TypedQuery query = em.createQuery("SELECT p FROM Player p", Player.class);
+	return (Collection<Player>) query.getResultList();
+    }
+    
+    public Player checkLogin(String username, String password) {
+        Player curplayer;
+
+        if ((curplayer = findPlayerByUsername(username)) != null) {
+            if (curplayer.getPassword().equals(password)) {
+                return curplayer;
+            }
+        }
+
+        return null;
     }
 }

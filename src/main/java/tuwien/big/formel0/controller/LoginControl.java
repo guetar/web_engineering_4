@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import tuwien.big.formel0.entities.Player;
 import tuwien.big.formel0.entities.RegisteredPlayerPool;
 import tuwien.big.formel0.utilities.Utility;
-import tuwien.big.formel0.webservice.WebService;
 
 @ManagedBean(name = "lc")
 @SessionScoped
@@ -45,20 +44,26 @@ public class LoginControl {
     }
 
     public String login() {
-        player = getRpp().getRegisteredPlayer(name, password);
+        try{
+            player = getRpp().checkLogin(name, password);
         
-        if (player != null) {
-            gc = new GameControl(player.getName());
-
-            WebService.setGender(player.getSex());
-            WebService.setBirthDate(player.getBirthday());
-            return "table";
-        } else {
+            if (player != null) {
+                gc = new GameControl(player.getName());
+                
+                return "table";
+            } else {
+                FacesContext ctx = FacesContext.getCurrentInstance();
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "", Utility.getResourceText(ctx, "msg", "loginfailed"));
+                ctx.addMessage("login", message);
+                return "index";
+            }
+        }catch(Exception e) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "", Utility.getResourceText(ctx, "msg", "loginfailed"));
             ctx.addMessage("login", message);
             return "index";
         }
+        
     }
 
     /**

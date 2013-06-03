@@ -1,15 +1,20 @@
 package tuwien.big.formel0.entities;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.NoneScoped;
 import javax.persistence.*;
+import tuwien.big.formel0.picasa.RaceDriver;
 
 @ManagedBean(name = "player")
 @NoneScoped
 @Entity
-@Table
-public class Player {
+@Table (name="player")
+public class Player implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Integer id;
     private String firstname = null;
     private String lastname = null;
     private String name = null;
@@ -17,6 +22,9 @@ public class Player {
     private String birthday = null;
     private String sex = null;
 
+    @ManyToOne
+    @JoinColumn
+    private RaceDriver racedriver = null;
     /**
      * Creates a new instance of Player
      */
@@ -26,8 +34,6 @@ public class Player {
     /**
      * @return the name
      */
-    @Id
-    @Column (nullable = false)
     public String getName() {
         return name;
     }
@@ -42,7 +48,6 @@ public class Player {
     /**
      * @return the password
      */
-    @Column (nullable = false)
     public String getPassword() {
         return password;
     }
@@ -57,7 +62,6 @@ public class Player {
     /**
      * @return the firstname
      */
-    @Column (nullable = false)
     public String getFirstname() {
         return firstname;
     }
@@ -72,7 +76,6 @@ public class Player {
     /**
      * @return the lastname
      */
-    @Column (nullable = false)
     public String getLastname() {
         return lastname;
     }
@@ -87,7 +90,6 @@ public class Player {
     /**
      * @return the birthday
      */
-    @Column (nullable = false)
     public String getBirthday() {
         return birthday;
     }
@@ -102,7 +104,6 @@ public class Player {
     /**
      * @return the sex
      */
-    @Column (nullable = false)
     public String getSex() {
         return sex;
     }
@@ -112,5 +113,19 @@ public class Player {
      */
     public void setSex(String sex) {
         this.sex = sex;
+    }
+    
+    /**
+     * @return the racedriver
+     */
+    public RaceDriver getRaceDriver() {
+        return racedriver;
+    }
+
+    /**
+     * @param racedriver the racedriver to set
+     */
+    public void setRaceDriver(RaceDriver racedriver) {
+        this.racedriver = racedriver;
     }
 }

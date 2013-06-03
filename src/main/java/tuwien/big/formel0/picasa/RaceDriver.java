@@ -1,5 +1,6 @@
 package tuwien.big.formel0.picasa;
 
+import java.io.Serializable;
 import javax.persistence.*;
 /**
  * Represents a race driver from Picasa
@@ -7,9 +8,12 @@ import javax.persistence.*;
  *
  */
 @Entity
-@Table
-public class RaceDriver {
+@Table(name="Avatar")
+public class RaceDriver implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Integer id;
     private String name;
     private String url;
     private String wikiUrl;
@@ -17,8 +21,6 @@ public class RaceDriver {
     public RaceDriver() {
     }
 
-    @Id
-    @Column (nullable = false)
     public String getName() {
         return name;
     }
@@ -27,7 +29,6 @@ public class RaceDriver {
         this.name = name;
     }
 
-    @Column (nullable = false)
     public String getUrl() {
         return url;
     }
@@ -36,13 +37,20 @@ public class RaceDriver {
         this.url = url;
     }
 
-    @Column (nullable = false)
     public String getWikiUrl() {
         return wikiUrl;
     }
 
     public void setWikiUrl(String wikiUrl) {
         this.wikiUrl = wikiUrl;
-    }   
+    }
+    
+    public Integer getId() {
+        return id;
+    }
+    
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
 }
