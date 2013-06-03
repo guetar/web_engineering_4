@@ -97,7 +97,7 @@ public class GameControl {
         }
         ++round;
 
-        if(isGameOver()) {
+        if(this.isGameOver()) {
             WebService.setWinner(player.getPosition() > computer.getPosition() ? player.getName() : "Computer");
             WebService.setDuration(game.getSpentTime() / 1000);
             WebService.setUsername(player.getName());
@@ -110,7 +110,11 @@ public class GameControl {
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
+            
+            
         }
+        
+        System.out.println("FERTIG " + this.isGameOver());
     }
     
     /**
