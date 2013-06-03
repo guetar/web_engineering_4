@@ -10,19 +10,27 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean(name = "drivers")
+@ApplicationScoped
 public class RaceDriverControl implements IRaceDriverService {
 
     List<RaceDriver> list;
 
-    public RaceDriverControl() {
-        list = new ArrayList<RaceDriver>();
-    }
-
     @Override
     public List<RaceDriver> getRaceDrivers() throws IOException, ServiceException {
+        if(list == null) {
+            fetchRaceDrivers();
+        }
+        
+        return list;
+    }
+    
+    private void fetchRaceDrivers() throws IOException, ServiceException {
+        list = new ArrayList<RaceDriver>();
+        
         PicasawebService myService = new PicasawebService("lab4");
         String userUrl = "https://picasaweb.google.com/data/feed/api/user/107302466601293793664";
         String albumUrl = userUrl + "/albumid/5868849825181458161";
@@ -54,7 +62,5 @@ public class RaceDriverControl implements IRaceDriverService {
             raceDriver.setWikiUrl(wiki);
             list.add(raceDriver);
         }
-
-        return list;
     }
 }
