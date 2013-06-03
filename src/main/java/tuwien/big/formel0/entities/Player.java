@@ -22,7 +22,7 @@ public class Player implements Serializable {
     private String birthday = null;
     private String sex = null;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn
     private RaceDriver racedriver = null;
     /**
